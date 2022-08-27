@@ -1,5 +1,17 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h1> Programe n° {{ programId }}</h1>
+    <table>
+        <thead>
+        <th>Series</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{  programById.id }}</td>
+                <td>{{  programById.title }}</td>
+                <td>{{  programById.summary }}</td>
+
+            </tr>
+        </tbody>
+    </table>
 {% endblock %}
