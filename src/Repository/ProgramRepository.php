@@ -39,6 +39,21 @@ class ProgramRepository extends ServiceEntityRepository
         }
     }
 
+    public function categoryOrderByLimite(string $categoryName , int $maxResults = 3 )
+    {
+        return $this
+            ->createQueryBuilder('p')
+            ->innerJoin('p.category', 'c')
+            ->addSelect('c')
+            ->andWhere('c.name = :categoryName')
+            ->setParameter('categoryName', $categoryName)
+            ->setMaxResults($maxResults)
+            ->orderBy('p.id' , 'DESC')
+            ->getQuery()
+            ->getResult();
+
+    }
+
 //    /**
 //     * @return Program[] Returns an array of Program objects
 //     */
