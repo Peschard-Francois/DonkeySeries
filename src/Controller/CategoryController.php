@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\CategoryRepository;
 use App\Repository\ProgramRepository;
+use phpDocumentor\Reflection\Types\Collection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,6 +25,11 @@ class CategoryController extends AbstractController
     public function show(string $categoryName, CategoryRepository $categoryRepository ,ProgramRepository $programRepository): Response
     {
 
+        /*$category = $categoryRepository->checkCategory($categoryName);*/
+       /* $category = $categoryRepository->findBy([
+            'name' => $categoryName,
+
+        ]);*/
         $category = $categoryRepository->checkCategory($categoryName);
         if (!$category) {
             throw $this->createNotFoundException("La catégorie n'existe pas" );
