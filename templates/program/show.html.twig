@@ -8,10 +8,32 @@
         <tbody>
             <tr>
                 <td>{{  programById.id }}</td>
-                <td>{{  programById.title }}</td>
-                <td>{{  programById.summary }}</td>
+                <td><img src="{{  programById.poster }}" alt="Image"></td>
+                {#<td>{{  programById.title }}</td>#}
+                <td>{{  programById.synopsis }}</td>
+                <td>{{  programById.country }}</td>
+                <td>{{  programById.year }}</td>
+                <td>{{  programById.year }}</td>
+
+
 
             </tr>
         </tbody>
     </table>
+
+    <table>
+        <thead>
+            <th>Series</th>
+        </thead>
+        <tbody>
+            <tr>
+                {% for season in seasons %}
+                    <td>{{  season.id }}</td>
+                    <td>{{  season.number }}</td>
+                    <td>{{  season.year }}</td>
+                    <td>{{  season.description }}</td>
+                    <td>><a href="{{ path('program_program_season_show', { programId:programById.id, seasonId: season.id }) }}">Voir</a></td>
+            </tr>
+        </tbody>
+    {% endfor %}
 {% endblock %}

@@ -8,10 +8,11 @@
         <tbody>
         {% for program in programs %}
             <tr>
+
                 <td>{{ program.id }}</td>
                 <td>{{ program.title }}</td>
                 <td>
-                    <a href="{{ path('program_program_show', { id: program.id }) }}">
+                    <a href="{{ path('program_program_show', { programId: program.id }) }}">
                         Voir
                     </a>
                 </td>
