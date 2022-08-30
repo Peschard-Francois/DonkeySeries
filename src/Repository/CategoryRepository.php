@@ -40,16 +40,6 @@ class CategoryRepository extends ServiceEntityRepository
 
     }
 
-    public function checkCategory(string $categoryName)
-    {
-        return $this
-            ->createQueryBuilder('c')
-            ->select('c.name')
-            ->andWhere('c.name = :categoryName')
-            ->setParameter('categoryName', $categoryName)
-            ->getQuery()
-            ->getResult();
-    }
 
 
 
