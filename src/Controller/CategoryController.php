@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use App\Repository\ProgramRepository;
-use phpDocumentor\Reflection\Types\Collection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,30 +21,23 @@ class CategoryController extends AbstractController
         ]);
     }
 
-    #[Route('/{categoryName}', name: 'category_show')]
-    public function show(string $categoryName, CategoryRepository $categoryRepository ,ProgramRepository $programRepository): Response
+    #[Route('/{name}', name: 'category_show')]
+    public function show(Category $category, CategoryRepository $categoryRepository ,ProgramRepository $programRepository): Response
     {
-
-        /*$category = $categoryRepository->checkCategory($categoryName);*/
-       /* $category = $categoryRepository->findBy([
-            'name' => $categoryName,
-
-        ]);*/
-        $category = $categoryRepository->checkCategory($categoryName);
-        if (!$category) {
-            throw $this->createNotFoundException("La catégorie n'existe pas" );
-        } else {
-
-            $categoryWithPrograms = $programRepository->categoryOrderByLimite($categoryName);
-
-            if (!$categoryWithPrograms) {
-                throw $this->createNotFoundException('Aucune série trouvée');
+            if (!$category) {
+                throw $this->createNotFoundException("La catégorie n'existe pas" );
             } else {
-                return $this->render('category/show.html.twig', [
-                    'categoryOne' => $categoryName,
-                    'categoryWithPrograms' => $categoryWithPrograms
+                $programByCategory = $programRepository->findBy([
+                    'category' => $category->getId()
                 ]);
+                if (!$programByCategory) {
+                    throw $this->createNotFoundException('Aucune série trouvée');
+                } else {
+                    return $this->render('category/show.html.twig', [
+                        'categoryOne' => $category->getName(),
+                        'categoryWithPrograms' => $programByCategory
+                    ]);
+                }
             }
-        }
     }
 }
