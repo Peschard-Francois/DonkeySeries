@@ -5,10 +5,12 @@ namespace App\Entity;
 use App\Repository\ProgramRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProgramRepository::class)]
+#[UniqueEntity('title',message: "The title {{ value }} have is already use")]
 class Program
 {
     #[ORM\Id]
@@ -17,9 +19,12 @@ class Program
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "La titre est vide veuillez remplir le champ")]
+    #[Assert\Length(max: 255, maxMessage: "La titre saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "La synopsis est vide veuillez remplir le champ")]
     private ?string $synopsis = null;
 
     #[ORM\Column(length: 255)]
