@@ -3,14 +3,19 @@
 namespace App\Controller;
 
 
+use App\Entity\Category;
 use App\Entity\Episode;
 use App\Entity\Program;
 use App\Entity\Season;
+use App\Form\CategoryType;
+use App\Form\ProgramType;
 use App\Repository\EpisodeRepository;
 use App\Repository\ProgramRepository;
 use App\Repository\SeasonRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,6 +34,32 @@ class ProgramController extends AbstractController
         }
         return $this->render('program/index.html.twig', [
             'programs' => $programs
+        ]);
+    }
+
+    #[Route("/new", name: "new")]
+    public function new(Request $request, ManagerRegistry $doctrine) : Response
+    {
+        // Create a new Category Object
+        $program = new Program();
+        // Create the associated Form
+        $form = $this->createForm(ProgramType::class, $program);
+        // Render the form
+        $form->handleRequest($request);
+        // Was the form submitted ?
+        if ($form->isSubmitted()) {
+            // Deal with the submitted data
+            // Get the Entity Manager
+            $entityManager = $doctrine->getManager();
+            // Persist Category Object
+            $entityManager->persist($program);
+            // Flush the persisted object
+            $entityManager->flush();
+            // Finally redirect to categories list
+            return $this->redirectToRoute('program_program_index');
+        }
+        return $this->render('program/new.html.twig', [
+            "form" => $form->createView(),
         ]);
     }
 
@@ -61,6 +92,7 @@ class ProgramController extends AbstractController
 
         ]);
     }
+
     #[Route('/program/{program_id}/season/{season_id}/episode/{episode_id}', name: 'program_episode_show')]
     #[ParamConverter("program", class: "App\Entity\Program", options: ["mapping" => ["program_id" => "id"]])]
     #[ParamConverter("season", class: "App\Entity\Season", options: ["mapping" => ["season_id" => "id"]])]
