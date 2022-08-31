@@ -15,6 +15,7 @@
                 <td>{{ categoryWithProgram.synopsis }}</td>
                 <td>{{  categoryWithProgram.country }}</td>
                 <td>{{  categoryWithProgram.year }}</td>
+                <td><a href="{{ path('program_program_show', { id: categoryWithProgram.id }) }}">Voir</a></td>
             </tr>
         {% endfor %}
 
