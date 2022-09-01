@@ -3,7 +3,7 @@
 {% block body %}
     <table>
         <thead>
-        <th>Series</th>
+        <th>Serie</th>
         </thead>
         <tbody>
             <tr>
@@ -16,14 +16,24 @@
                 <td>{{  programById.year }}</td>
 
 
+                <strong>Acteurs :</strong>
+                <ul>
+                    {% for actor in programById.actors %}
+                    <a href="{{ path('app_actor_show', { id:actor.id}) }}"> {{ actor.name }} </a>
+                        <br>
 
+
+                    {% else %}
+                        <li>Aucun acteur pour cette série</li>
+                    {% endfor %}
+                </ul>
             </tr>
         </tbody>
     </table>
 
     <table>
         <thead>
-            <th>Series</th>
+            <th>Season</th>
         </thead>
         <tbody>
             <tr>
